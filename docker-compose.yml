@@ -54,10 +54,9 @@ services:
       context: ${ROOT_FOLTER}/${BACKEND_FOLDER}
     depends_on:
       - php_backend
-    # Comment out this volume in production
     volumes:
       - php_socket:/var/run/php
-      - ${ROOT_FOLTER}/${FRONTEND_FOLDER}/public:/srv/app/public
+      - ${ROOT_FOLTER}/${BACKEND_FOLDER}/public:/srv/app/public
     ports:
       - '${BACKEND_PORT}:80'
 
