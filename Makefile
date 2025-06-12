@@ -8,17 +8,17 @@ backend.build:
 backend.sh:
 	make up && docker compose exec -it php_backend sh
 
-backend.phpunit:
-	docker compose exec php_backend bin/phpunit
+backend.tests:
+	docker compose run --entrypoint="composer" php_backend tests
 
 backend.fixtures:
-	docker compose exec php_backend bin/console doctrine:fixtures:load -n
+	docker compose run --entrypoint="bin/console" php_backend doctrine:fixtures:load -n
 
 backend.db.recreate:
-	docker compose exec php_backend composer db:recreate:dev
+	docker compose run --entrypoint="composer" php_backend db:recreate:dev
 
 backend.migrate:
-	docker compose exec php_backend bin/console doctrine:migrations:migrate -n
+	docker compose run --entrypoint="bin/console" php_backend doctrine:migrations:migrate -n
 
 backend.install:
 	docker compose run --entrypoint="composer" php_backend install
@@ -28,7 +28,7 @@ backend.install:
 # ---------------------------
 
 frontend.build:
-	docker build -f frontend/Dockerfile --target production -t opencal-frontend:latest frontend
+	docker compose build frontend
 
 frontend.bash:
 	docker compose exec -it frontend bash
@@ -37,7 +37,7 @@ frontend.install:
 	docker compose run --entrypoint="npm" frontend install
 
 frontend.lint:
-	docker compose exec frontend npm run lint
+	docker compose exec frontend npm run lint:ts
 
 frontend.audit:
 	docker compose exec frontend npm audit --audit-level=low
