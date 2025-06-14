@@ -15,9 +15,9 @@ services:
     volumes:
       - database:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "-u", "root", "-psymfony", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "ping", "-h", "localhost"]
       timeout: 30s
-      retries: 30
+      retries: 5
     ports:
       - '${MYSQL_PORT}:3306'
 
@@ -72,7 +72,7 @@ services:
     depends_on:
       - nginx_backend
     ports:
-      - "${FRONTEND_PORT}:8080"
+      - "${FRONTEND_PORT}:5173"
 
   mailer:
     image: axllent/mailpit
